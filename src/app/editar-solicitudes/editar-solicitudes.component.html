@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <br>
+
+      <!-- Mensaje de carga -->
+      <div *ngIf="isLoading" class="alert alert-info">Cargando...</div>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+
+      <form (ngSubmit)="onSubmit()" #solicitudForm="ngForm">
+
+        <!-- Nombre del Adoptante -->
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="nombreAdoptante">Nombre del Adoptante</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              required 
+              [(ngModel)]="solicitud.nombreAdoptante" 
+              name="nombreAdoptante" 
+              placeholder="Ingrese el nombre del adoptante">
+          </div>
+        </fieldset>
+
+        <!-- Fecha de Solicitud -->
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="fechaSolicitud">Fecha de Solicitud</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              required 
+              [(ngModel)]="solicitud.fechaSolicitud" 
+              name="fechaSolicitud">
+          </div>
+        </fieldset>
+
+        <!-- Estado de la Solicitud -->
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="estado">Estado</label>
+            <select class="form-control" required [(ngModel)]="solicitud.estado" name="estado">
+              <option value="" disabled selected>Seleccione el estado</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Aprobada">Aprobada</option>
+              <option value="Rechazada">Rechazada</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <br>
+
+        <!-- Botón de Enviar -->
+        <fieldset class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button 
+              type="submit" 
+              class="btn btn-primary" 
+              [disabled]="isLoading || !solicitudForm.form.valid">Enviar</button>
+          </div>
+        </fieldset>
+
+      </form>
+    </div>
+  </div>
+</div>

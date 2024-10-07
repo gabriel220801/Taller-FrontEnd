@@ -1,0 +1,110 @@
+<style>
+    body {
+      font-family: 'Times New Roman', Times, serif; /* Fuente general */
+    }
+  
+    .card-img-top {
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0; /* Bordes redondeados en la parte superior */
+    }
+  
+    .card {
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px; /* Bordes redondeados en la tarjeta */
+      transition: transform 0.2s;
+      margin-bottom: 20px; /* Espaciado entre las tarjetas */
+    }
+  
+    .card:hover {
+      transform: translateY(-5px); /* Efecto de levantamiento al pasar el mouse */
+    }
+  
+    .btn-primary {
+      float: right; /* Alinear el botón a la derecha */
+    }
+  
+    .container {
+      margin-top: 20px;
+    }
+  
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #4a4a4a; /* Color del texto del título */
+    }
+  
+    .default-image {
+      height: 250px; 
+      object-fit: cover; /* Asegura que la imagen por defecto cubra el área */
+      border-radius: 8px 8px 0 0; /* Bordes redondeados en la parte superior */
+    }
+  
+    .no-results {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 1.2em;
+      color: #777; /* Color gris para el texto de no resultados */
+    }
+  
+    .card-body {
+      text-align: left; /* Alinear el texto a la izquierda */
+    }
+  
+    .card-title {
+      font-size: 1.5em; /* Tamaño de fuente del título */
+      margin-bottom: 10px; /* Espaciado inferior */
+    }
+  
+    .card-text {
+      margin-bottom: 10px; /* Espaciado inferior en los párrafos */
+    }
+  </style>
+<body>
+  <!-- Contenedor principal -->
+  <div class="container">
+    <h2>¡Conoce a Nuestras Mascotas!</h2>
+    <div class="row mb-4">
+      <div class="col-sm-12">
+        <!-- Botón para agregar mascota -->
+        <a class="btn btn-primary" href="/mascotas/agregar">Agregar Mascota</a>
+      </div>
+    </div>
+  
+    <!-- Listado de mascotas -->
+    <div class="row">
+      <div class="col-sm-4 mb-4" *ngFor="let mascota of mascotas | async; let i = index">
+        <div class="card">
+          <!-- Imagen de la mascota -->
+          <img class="card-img-top" [src]="mascota.imagen" alt="Imagen de {{ mascota.nombre }}" *ngIf="mascota.imagen; else noImage" />
+          <ng-template #noImage>
+            <img class="default-image" src="assets/default-image.jpg" alt="Imagen por defecto" />
+          </ng-template>
+          <!-- Información de la mascota -->
+          <div class="card-body">
+            <h5 class="card-title">{{ mascota.nombre }}</h5>
+            <p class="card-text"><strong>Edad:</strong> {{ mascota.edad }} años</p>
+            <p class="card-text"><strong>Género:</strong> {{ mascota.genero }}</p>
+            <p class="card-text"><strong>Descripción:</strong> {{ mascota.descripcion }}</p>
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-between">
+              <a class="btn btn-info" href="/mascotas/editar/{{ mascota.id }}">Editar</a>
+              <!-- Enlace para adoptar la mascota -->
+              <a [routerLink]="['/solicitudes/agregar']"  class="btn btn-success">
+                Generar Solicitud
+              </a>
+              
+
+              <a class="btn btn-danger" (click)="borrarMascota(mascota.id)">Borrar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Mensaje si no hay mascotas -->
+      <div *ngIf="(mascotas | async)?.length === 0" class="no-results col-12">
+        <p>No hay mascotas disponibles en este momento.</p>
+      </div>
+    </div>
+  </div>
+</body>    
